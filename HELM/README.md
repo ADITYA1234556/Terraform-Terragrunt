@@ -213,9 +213,28 @@ helm repo index --url https://aditya1234556.github.io/Terraform-Terragrunt/ .
 # This will create an index.html file
 git clone https://github.com/ADITYA1234556/Terraform-Terragrunt.git
 mv index.html pythonapp-0.1.0.tgz Terraform-Terragrunt/HELM/helmpackage/
+# git commit and push, index.html and package should be at repo root level or docs 
+helm repo remove mychartrepo
 helm repo add mychartrepo https://aditya1234556.github.io/Terraform-Terragrunt/
-helm repo list -A
+helm repo list
+helm search repo pythonapp # mychartrepo/pythonapp
 ```
+- Now lets create a helmfile to point to our packaged helmchart. Create a helmfile.yml
+```yaml
+repositories:
+  - name: helloworld
+    url: https://aditya1234556.github.io/Terraform-Terragrunt
+releases:
+  - name: flaskapp # chart name
+    chart: pythonapp # name of folder
+    installed: true # set true to install false to uninstall
+```
+```bash
+helmfile -f helmfile.yml sync
+helm list -a
+kubectl get pods
+```
+- Follow these steps to create a helm package and use it from a central repo, accessible anywhere.
 
 
 ## HELM REPOS
