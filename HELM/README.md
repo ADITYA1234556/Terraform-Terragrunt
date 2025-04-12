@@ -222,10 +222,22 @@ helmfile -f helmfile.yml sync # Will deploy/install the chart
 sed -i 's/installed: true/installed: false/g' helmfile.yml
 helmfile -f helmfile.yml sync # Will delete/uninstall the chart
 ```
+
+
+## HELM REPOS
+- Helm has repo database
+- We can search for repo using, **helm search hub wordpress**
+- To add third party repo, 
+```bash
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm show readme bitnami/wordpress #--version 10.0.3
+helm show values bitnami/wordpress #--version 10.0.3
+```
 - helmfile can take the helm package from git repo as well, we need **helm-git** tool to connect helm with git. <a href="https://github.com/aslafy-z/helm-git">Helm-git Plugin</a>
 ```bash
 helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
 ```
+- To add our applicaiton package, to helm repo so that we can access our helm repo from any where.
 - To package and publish Helm charts to GitHub Repo, First enable pages in GitHub Repository settings.
 - Now, In helm charts we have an important file called **index.html**. <a href="https://helm.sh/docs/topics/chart_repository/">More info</a>.
 - Follow these steps to create helm package
@@ -274,15 +286,3 @@ helm list -a
 kubectl get pods
 ```
 - Follow these steps to create a helm package and use it from a central repo, accessible anywhere.
-
-
-## HELM REPOS
-- Helm has repo database
-- We can search for repo using, **helm search hub wordpress**
-- To add third party repo, 
-```bash
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm show readme bitnami/wordpress #--version 10.0.3
-helm show values bitnami/wordpress #--version 10.0.3
-```
-- To add our applicaiton package, 
