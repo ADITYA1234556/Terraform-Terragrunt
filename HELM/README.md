@@ -183,7 +183,37 @@ helmfile -f helmfile.yml sync # Will deploy/install the chart
 sed -i 's/installed: true/installed: false/g' helmfile.yml
 helmfile -f helmfile.yml sync # Will delete/uninstall the chart
 ```
-- helmfile can take the helm package from git repo as well, we need **helm-git** tool.
+- helmfile can take the helm package from git repo as well, we need **helm-git** tool to connect helm with git. <a href="https://github.com/aslafy-z/helm-git">Helm-git Plugin</a>
+```bash
+helm plugin install https://github.com/aslafy-z/helm-git --version 1.3.0
+```
+- To package and publish Helm charts to GitHub Repo, First enable pages in GitHub Repository settings.
+- Now, In helm charts we have an important file called **index.html**. <a href="https://helm.sh/docs/topics/chart_repository/">More info</a>.
+- Follow these steps to create helm package
+```bash
+cp -r pythonapp helmpackage
+cd helmpackage
+└── pythonapp
+    ├── Chart.yaml
+    ├── charts
+    ├── templates
+    │   ├── NOTES.txt
+    │   ├── _helpers.tpl
+    │   ├── deployment.yaml
+    │   ├── hpa.yaml
+    │   ├── ingress.yaml
+    │   ├── service.yaml
+    │   ├── serviceaccount.yaml
+    │   └── tests
+    │       └── test-connection.yaml
+    └── values.yaml
+helm package pythonapp
+# From github repo, after pages is setup get the URL
+helm repo index --url https://aditya1234556.github.io/Terraform-Terragrunt/ .
+# This will create an index.html file
+git clone https://github.com/ADITYA1234556/Terraform-Terragrunt.git
+mv helmpackage
+```
 
 
 ## HELM REPOS
