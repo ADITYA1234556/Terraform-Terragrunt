@@ -1,0 +1,36 @@
+FROM python:3.9-slim-buster AS builder
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the requirements file
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY main.py .
+# If you have other source files, copy them as needed
+# COPY other_module.py .
+# COPY src/ src/
+
+FROM python:3.9-slim-buster
+
+# Set the working directory
+WORKDIR /app
+
+# Copy only the application code from the builder stage
+COPY --from=builder /app/main.py .
+# If you copied other source files in the builder stage, copy them here as well
+# COPY --from=builder /app/other_module.py .
+# COPY --from=builder /app/src/ /app/src/
+
+# Copy the requirements file to install dependencies in the final image (optional but recommended for clarity)
+COPY requirements.txt .
+
+# Install the dependencies in the final image (this is the crucial step)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Set the command to run your application
+CMD ["python3", "main.py"]

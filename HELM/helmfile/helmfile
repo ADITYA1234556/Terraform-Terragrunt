@@ -1,0 +1,4 @@
+releases:
+  - name: flaskapp # chart name
+    chart: pythonapp # name of folder
+    installed: true # set true to install false to uninstall
