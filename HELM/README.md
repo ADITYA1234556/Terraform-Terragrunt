@@ -1,21 +1,9 @@
-# Helm Charts
+# 🚀 Helm Charts Setup on MicroK8s
 
-## Testing Env
+## 🧪 Testing Environment
+- We'll use **MicroK8s** to host a lightweight Kubernetes cluster.
 - Let us host a mini kubernetes cluster using **micro k8s** <a href ="https://microk8s.io/docs">Link to Microk8s</a>
-- sudo snap install microk8s --classic
-- microk8s status --wait-ready 
-- Ubuntu user wont have enough permission so add to microk8s group **sudo usermod -aG microk8s ubuntu**
-- newgrp microk8s to reset group permissions.
-- Install kubectl cli
-```bash
-curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl #x86 arch
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-chmod +x kubectl
-mkdir -p ~/.local/bin
-mv ./kubectl ~/.local/bin/kubectl
-kubectl version --client
-```
-- MicroK8s Installation
+- 📦 Install MicroK8s
 ```bash
 sudo snap install microk8s --classic --channel=1.32
 echo $HOME
@@ -29,6 +17,15 @@ microk8s config > config
 cat config #To check the kube config file
 kubectl get all -A
 ```
+- Install kubectl cli
+```bash
+curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl #x86 arch
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+chmod +x kubectl
+mkdir -p ~/.local/bin
+mv ./kubectl ~/.local/bin/kubectl
+kubectl version --client
+```
 
 ## Installing Helm charts.
 - To install Helm chart follow the <a href="https://helm.sh/docs/intro/install/">docs</a>
@@ -39,10 +36,10 @@ chmod 700 get_helm.sh
 helm version
 ```
 
-## What is Helm Chart Architecture
+## 🧱 Helm Chart Architecture
 - Charts -> Helm Repo -> Helm along with Kubectl -> Kube-api-server(kube-dns, etcd, controller manager, scheduler) -> Nodes
 
-## Helm Quick Start
+## ⚡ Helm Quick Start
 - To create helm chart - "helm create nameoffolder"
 - It should create a directory with Helm charts directory structure. To verify, cd into the directory and run "tree ."
 ```tree
@@ -66,23 +63,65 @@ helm version
 - **charts**
 - **templates**: Contains application specific kuberentes definition files
 - **values.yaml**: Contains variables that will override values in templates.
-- To deploy the helmchart "helm install nameofchart nameoffolder"
-- To list the charts running inside the cluster "helm list -a"
+- Helm quick test
+```bash
+helm install nameofchart nameoffolder # To deploy the helmchart 
+helm list -a # To list the charts running inside the cluster
+```
 - With microk8s we have a dashboard where we can view the kubernetes cluster in a dashboard, run the command **"microk8s dashboard-proxy"**
+```bash
+microk8s dashboard-proxy
+```
 - You will get a https://IP:Port to access the dashboard and a token, Simply pass the token to login to the dashboard and view the workloads on microk8s cluster.
 - DASHBOARD<img src="./microks-dashboard-proxy.png" alt="DASHBOARD"/>
 - Now lets delete or uninstall the helm chart we deployed. run the command "helm uninstall nameofchart" 
 
-## HELM COMMANDS
-- helm create helloworld - Use this command to create helm folder with the name helloworld that has all the charts template. 
-- helm install myhelloworld helloworld - Use this command to install a new helm chart with the name myhelloworld from the template of the helloworld. Initiallity it will have REVISION 1 
-- helm list -a - To list all the helm charts deployed in the cluster
-- helm upgrade myhelloworld helloworld - This will upgrade the helm chart with any new changes to the template files inside helloworld folder. This will have REVISION 2 and SEQUENTIALLY.
-- helm rollback myhelloworld 1 - This will rollback the myhelloworld helmchart to REVISION 1 after ROLLBACK still the REVISION will increase SEQUENTIALLY. 
-- helm install myhelloworld --debug --dry-run helloworld - This will give show any errors or misconfigurations in helm chart values by validating with Kuber-Api-Server. 
-- helm template helloworld - This is a helm template, that simple validates all the yml templates inside helloworld helm directory
-- helm lint helloworld - This will tell us if there are any errors or misconfiguration in helm chart folder helloworld. Similar to tflint in terraform.
-- helm uninstall myhelloworld - This will delete or uninstall the helmchart myhelloworld so all pods and services will go down. We can make use of the directory helloworld still to recreate if required.
+## 📘 Helm Commands Cheat Sheet
+### 🚀 Basic Helm Usage
+
+- **`helm create helloworld`**  
+  Creates a new Helm chart named `helloworld` with the default template structure.
+
+- **`helm install myhelloworld helloworld`**  
+  Installs a Helm release named `myhelloworld` from the `helloworld` chart directory.  
+  Starts with **REVISION 1**.
+
+- **`helm list -a`**  
+  Lists **all** Helm releases, including deleted or failed ones.
+
+---
+
+### 🔄 Upgrade & Rollback
+
+- **`helm upgrade myhelloworld helloworld`**  
+  Upgrades the `myhelloworld` release using updated templates in the `helloworld` folder.  
+  REVISION increases sequentially (e.g., to 2, 3, etc.).
+
+- **`helm rollback myhelloworld 1`**  
+  Rolls back the `myhelloworld` release to **REVISION 1**.  
+  Note: Revision number will still increase after rollback.
+
+---
+
+### 🧪 Debugging & Validation
+
+- **`helm install myhelloworld --debug --dry-run helloworld`**  
+  Simulates an install and validates the chart with the Kubernetes API without applying anything.
+
+- **`helm template helloworld`**  
+  Renders Kubernetes manifests locally from the `helloworld` chart without installing.
+
+- **`helm lint helloworld`**  
+  Performs static analysis on your Helm chart to detect syntax or structural issues (similar to Terraform's `tflint`).
+
+---
+
+### 🗑️ Cleanup
+
+- **`helm uninstall myhelloworld`**  
+  Uninstalls the `myhelloworld` release.  
+  All associated resources like pods, services, etc., will be deleted.  
+  The `helloworld` chart folder can still be reused to reinstall.
 
 ## Create custom helm charts
 - I have created a simple flask app using python, that is accessible at http://localhost:9001
