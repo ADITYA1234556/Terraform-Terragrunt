@@ -209,7 +209,7 @@ cd helmpackage
     └── values.yaml
 helm package pythonapp
 # From github repo, after pages is setup get the URL
-https://aditya1234556.github.io/Terraform-Terragrunt/
+helm repo index --url https://aditya1234556.github.io/Terraform-Terragrunt/ .
 # This will create an index.html file
 git clone https://github.com/ADITYA1234556/Terraform-Terragrunt.git
 mv index.html pythonapp-0.1.0.tgz Terraform-Terragrunt/HELM/helmpackage/
