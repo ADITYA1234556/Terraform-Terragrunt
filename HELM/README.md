@@ -209,11 +209,11 @@ cd helmpackage
     └── values.yaml
 helm package pythonapp
 # From github repo, after pages is setup get the URL
-helm repo index --url https://aditya1234556.github.io/Terraform-Terragrunt/HELM/helmpackage .
+https://aditya1234556.github.io/Terraform-Terragrunt/
 # This will create an index.html file
 git clone https://github.com/ADITYA1234556/Terraform-Terragrunt.git
 mv index.html pythonapp-0.1.0.tgz Terraform-Terragrunt/HELM/helmpackage/
-helm repo add mychartrepo https://aditya1234556.github.io/Terraform-Terragrunt/HELM/helmpackage
+helm repo add mychartrepo https://aditya1234556.github.io/Terraform-Terragrunt/
 helm repo list -A
 ```
 
